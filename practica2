@@ -23,4 +23,4 @@ class(calf)
 rm(fac) ##borrar variables rm
 rm(lic)
 
-pie (calf,etiq, main = "calificaciones",sub = "Fuente: UAEMEX",col = c("blue","red","pink","yellow"),radius = 1.5,clockwise = TRUE,lty = 0)
+pie (calf,lic, main = "calificaciones",sub = "Fuente: UAEMEX",col = c("blue","red","pink","yellow"),radius = 1.5,clockwise = TRUE,lty = 0)
