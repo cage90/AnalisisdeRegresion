@@ -1,0 +1,26 @@
+# crear 3 var con 4 entradas los nombres de las var son 
+#facultad economia inganieria, arquitectura derecho
+#licenciatura (actuaria ing civil arquitectura derecho)
+#calificacion de los alumnos (6-4-10-8)
+
+# identificar con r que tipode var son
+
+#borrar las  var fac y licenciatura
+
+#graficar con pie la vr calificacion
+
+#incorporar los diferentes tipos de argumentos utilizados
+
+#x11 crear una ventana
+fac <- c("Actuaria","Ingenieria","Arquitectura","Derecho")
+lic <- c("actuaria","ing civil","arquitectura","derecho")
+calf <-c(6,4,10,8)
+
+class(fac)#tipo de var
+class(lic)
+class(calf)
+
+rm(fac) ##borrar variables rm
+rm(lic)
+
+pie (calf,etiq, main = "calificaciones",sub = "Fuente: UAEMEX",col = c("blue","red","pink","yellow"),radius = 1.5,clockwise = TRUE,lty = 0)
