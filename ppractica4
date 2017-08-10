@@ -1,0 +1,66 @@
+# generar 3 secuencias que generen lo sig datos
+# 1 1000 datos que se generen de 3 en 3 y pedir a r el dato 300 del vector generado
+# 2 450 datos que su secuencia sea de 50 datos en 50 datos 
+# pedir a r el dato 10
+# 3 2000 datos que su secuencia sea de .3 en .3 
+# en este caso pedir a r los datos 3, 15, 800, y 1999
+
+# ejercicio de datos aleatorios 
+# 1 suponemos una empresa que quiere estimar una pencion  para sus trabajadores con base en 
+# la antiguedad, por lo que se requiere estimar una muestra de 500 trabajadores sean desde hasta 0 - 30 años, pedir a r el ultimo dato de esta muestra
+# 2 generar una muestra de 50000 datos que tengan un rango de 0 - 100000
+# 3 generar una muestra de 50 datos que tengan un rango de 10 - 19, pedir a r los datos  34, 43, y 49
+
+sec1 <- seq(0,3000-1,3)
+sec1[300]
+length(sec1)
+
+sec2 <- seq(0,22500-1,50)
+sec2[10]
+length(sec2)
+
+sec3 <- seq(0,.3*2000-.3,.3)
+sec3 [c(3,15,800,1999)]
+length(sec3)
+
+muestra1 <- sample(0:30,500,replace=T)
+muestra2 <- data.frame(sample(0:100000,50000))
+muestra3 <- sample(10:19,50,replace = T)
+muestra3[c(34,43,49)]
+
+# matrices
+e <- 1:10
+View(e)
+
+dim(e) <- c(2,5)  # convertir el vector e en un amatriz de 2 reglones por 5 columnas
+View(e)
+
+dim(e) <- c(5,2) #vertir a una matriz de 5 reglones por 2 columnas
+View(e)
+
+e[5,2] # conocer el dato de la matriz [renglon,columna]
+e[,2] # valores de la columna 2
+e[,1] # valores de la columna 1
+e[3,] # valores del renglon 3
+# crear matriz con una funcion
+f <- matrix(110:119, nrow = 5, ncol = 2, byrow = T) # matriz(rango, renglones,columnas,orden)
+f
+g <- matrix(1:10, nrow = 5, ncol = 2)
+g
+# tambien se le pueden asignar nombres a renglones y columnas de una matriz
+row.names(f) <- c("manzanas","naranja","piña","melon","mango")
+colnames(f) <- c("mercado1","mercado2")
+# conocer qeu nombres tiene una matriz en su renglon y columnas
+colnames(f)
+row.names(f)
+#conocer los datos de una columna 
+f["manzanas","mercado2"]
+View(f)
+# otra forma de generar matriz con rbind y cbind
+i <- rbind(1:2, 4:3,c(5,6), c(2,7),c(8,9))
+i
+# cada argumento se define un renglon
+
+j <- cbind(5:3, c(4,5,6), 9:7, c(1,5,7), 3:5)
+j
+# carda argumento se define una columna
