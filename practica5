@@ -1,0 +1,68 @@
+a <- (12:31)
+dim(a) <- c(5,4)
+colnames(a) <- c("Toluca","Pachuca","Gdl","Mty")
+rownames(a) <- c("escuela1","escuela2","escuela3","escuela4","escuela5")
+
+### pegar añadir un renglon a la matriz 
+
+z <- rbind(a,c(4,5,6,7)) # pegar una nuevo rengon a la matriz 
+z
+rownames(z) <- c("escuela1","escuela2","escuela3","escuela4","escuela5","escuela6") ##nombrar el renglon 6
+
+### pegar añadir una nueva columna
+
+z <- cbind(z,c(14,25,36,47,99))    #agregar una nueva columna 
+z
+colnames(z) <- c("Toluca","Pachuca","Gdl","Mty","jocoti")  ## añadir nombre a la columna nueva
+z
+
+z ["escuela1","jocoti"] <- 14   ## reasignar un valor en la matriz
+z
+edit(z) # editar un matriz con ventana grafica
+
+## multiplicar matrices multipcar = %*% (segir reglas mult de matrices)
+z%*%z
+## transpuesta de una matriz se utiliza t(matriz)
+t(i)
+### data frame
+nombres <- c("sergio","juan","rocio","jessica")
+edad <- c(30,43,21,18)
+altura <- c(170,165,175,172)
+salario <- c(3000,4500,2200,4300)
+basem <- data.frame(nombres,edad,altura,salario)
+View(basem)
+
+basem [4,3] <- 178 ## actualizar dato
+
+basem$salario * 2.2 -> basem$salario  ## multiplicar el vector salario por 2.2 
+basem
+
+peso <- c(83.2,75.2,69.3,70.5)
+basem <- data.frame(nombres,edad,altura,salario,peso)
+basem
+
+basem$peso *1.2 -> basem$peso
+
+round(basem$peso,3) -> basem$peso #redondear los valores a 3
+basem$escol <- c("prepa","lic","ninguno",'prim')
+
+basem$sexo <- c(1,1,2,2)  ## crear var y aunirla a la base
+basem
+
+## table con sexo 
+table(basem$sexo) # tabal de frecuencias
+
+attach (basem) ### indica apartir de la sig linea, las intrucciones hacen referencia a la base indicada
+table(sexo)
+detach(basem)  ## cancela la funcion attach
+
+####paqueterias
+# instalar paqueteria desde intarnet
+install.packages("foreign") # exportar importar base de datos
+install.packages("questionr") # es para expandir frecuencias de base de datos muestrales
+install.packages("car")  # es para regresion
+
+# para mandar a llamar una paqueteria instalada, library() y requiere
+library(foreign)
+library(questionr)
+library(car)
