@@ -1,0 +1,17 @@
+require (foreign)
+mti2015 <- read.dbf("C://Users/SALA-D31//Desktop//mti2015_05_17_sdem_precodificado.DBF")
+table (mti2015$SEX) ### mostrar cuantos hombres y mujeres hay
+require (questionr)
+wtd.table(mti2015$SEX, weights = mti2015$FAC_MTI) ### datos expandidos 
+ls (mti2015) #comnocer todas las variables de las base
+sum (mti2015$FAC_MTI) #suma toda la columna FAC_MTI
+table (mti2015$R_DEF_ENOE)
+table(mti2015$CS_P12)
+wtd.table(mti2015$CS_P12, weights = mti2015$FAC_MTI)
+wtd.table(mti2015$EDA, mti2015$CS_P12, weights = mti2015$FAC_MTI) # desplegar tabla por edad,sabe o no leer no se sabe  ## solo permite cruzar dos variables
+edomex <- subset (mti2015, mti2015$ENT == 15) ## extraer datos solod el estado de mexico (filtrar datos)
+edomexmuj <- subset (mti2015, mti2015$ENT == 15 & mti2015$SEX == 2) # extraer los los datos del estado de mexico solo mujeres
+base2 <- subset (mti2015, mti2015$ENT == "01" | mti2015$ENT == 32) ## 01 no lo reconoce sin comillas otra solucion es cambiar a numerico
+table (base2$ENT) # conocer la poblacion de aguascalientes y zacatecaz
+as.numeric(mti2015$ENT) ###cambiar a numerico la var ##tarea convertir a numerico la var ent a numerico
+class(mti2015$ENT)
