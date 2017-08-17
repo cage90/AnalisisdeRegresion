@@ -1,0 +1,29 @@
+temporal <- tempfile()
+download.file("http://www.beta.inegi.org.mx/contenidos/proyectos/enchogares/modulos/mti/2015/microdatos/mti2015_bases_conapo_dbf.zip",temporal)
+files = unzip(temporal, list = TRUE)$Name
+unzip(temporal, files = files[grepl("dbf",files)])
+library (foreign)
+files
+mtil15 <- data.frame(read.dbf("mti2015_05_17_sdem_precodificado.DBF"))
+class(mtil15)
+mtil15$ENT <- as.numeric(mtil15$ENT)
+class(mtil15)
+###etiquetar variables
+table(mtil15$CS_P15)
+mtil15$CS_P15 <- factor(mtil15$CS_P15,levels = c(1,2,3,4),labels = c("Primaria","Secundaria","Preparatoria","No sabe"))
+wtd.table(mtil15$CS_P15)
+table(mtil15$RAMA)
+mtil15$RAMA <- factor(mtil15$RAMA,levels = c(1,2,3,4,5,6,7),labels = c("Agropecuario","Construcción","Industria manufacturera","Comercio","Servicios","Otros","No Especificado"))
+wtd.table(mtil15$RAMA)
+install.packages("plyr")
+library(plyr)
+mtil15$RAMA <- as.numeric(mtil15$RAMA)
+mtil15$RAMA2[mtil15$RAMA == 1] <- 1
+mtil15$RAMA2[mtil15$RAMA == 2] <- 2
+mtil15$RAMA2[mtil15$RAMA == 3] <- 2
+mtil15$RAMA2[mtil15$RAMA == 4] <- 3
+mtil15$RAMA2[mtil15$RAMA == 5] <- 3
+mtil15$RAMA2[mtil15$RAMA == 6] <- 4
+mtil15$RAMA2[mtil15$RAMA == 7] <- 4
+mtil15$RAMA2 <- factor(mtil15$RAMA2,levels = c(1,2,3,4),labels = c("Primaria","Secundaria","Terciaria","Indefinida"))
+wtd.table(mtil15$RAMA2)
