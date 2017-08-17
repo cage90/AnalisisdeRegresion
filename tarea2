@@ -1,0 +1,5 @@
+require(foreign)
+require(questionr)
+mti2015 <- read.dbf("C://Users/SALA-D31//Desktop//mti2015_05_17_sdem_precodificado.DBF")
+nuevovalor <- as.numeric(mti2015$ENT) ###cambiar a numerico la var ##tarea convertir a numerico la var ent a numerico
+class(mti2015$ENT)
