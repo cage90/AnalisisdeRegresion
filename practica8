@@ -1,0 +1,38 @@
+library (foreign)
+mtil15 <- data.frame(read.dbf("mti2015_05_17_sdem_precodificado.DBF"))
+mtil15$RAMA2 [mtil15$RAMA ==1] <- 1
+mtil15$RAMA2[mtil15$RAMA == 2 | mtil15$RAMA == 3] <- 2
+mtil15$RAMA2[mtil15$RAMA == 4 | mtil15$RAMA == 5] <- 3
+mtil15$RAMA2[mtil15$RAMA == 6 | mtil15$RAMA == 7] <- 4
+table(mtil15$RAMA2)
+table(mtil15$EDA)
+# recodificar la variable EDA en una nueva variable que se llame GPOEDA y etiquetarla
+# esta drecodificacion debe quedar en 4 lineas de Script la recodificacion es la siguiente
+# 5,6,7      -> 1 <-niño
+# 8,9,10,11  -> 2 <- Preado
+# 12,13,14   -> 3 <- ado
+# 15,16,17   -> 4 <- Joven
+#una vez que haya realizado el ejercicio generar una tabla con todos los expandidos y exporatala a excel
+mtil15$EDA <- as.character(mtil15$EDA)
+mtil15$EDA <- as.numeric(mtil15$EDA)
+mtil15$GPOEDA[mtil15$EDA == 5 | mtil15$EDA == 6 | mtil15$EDA == 7 ] <-1
+mtil15$GPOEDA[mtil15$EDA == 8 | mtil15$EDA == 9 | mtil15$EDA == 10 | mtil15$EDA == 11] <-2
+mtil15$GPOEDA[mtil15$EDA == 12 | mtil15$EDA == 13 | mtil15$EDA == 14] <-3
+mtil15$GPOEDA[mtil15$EDA == 15 | mtil15$EDA == 16 | mtil15$EDA == 17 ] <-4
+table(mtil15$GPOEDA)
+mtil15$GPOEDA <- factor(mtil15$GPOEDA,levels = c(1,2,3,4),labels = c("niño","preado","ado","joven"))
+#############         otra forma  
+mtil15$EDA <- as.numeric(as.character(mtil15$EDA))
+table(mtil15$EDA)
+mtil15$GPOEDA[mtil15$EDA >= 5 & mtil15$EDA <= 7 ] <-1
+mtil15$GPOEDA[mtil15$EDA >= 8 & mtil15$EDA <= 11 ] <-2
+mtil15$GPOEDA[mtil15$EDA >= 12 & mtil15$EDA <= 14 ] <-3
+mtil15$GPOEDA[mtil15$EDA >= 15 & mtil15$EDA <= 17 ] <-4
+table(mtil15$GPOEDA)
+mtil15$GPOEDA <- factor(mtil15$GPOEDA,levels = c(1,2,3,4),labels = c("niño","preado","ado","joven"))
+require(questionr)
+t <- wtd.table(mtil15$GPOEDA, weights = mtil15$FAC_MTI) ## expandir datos
+t
+write.csv(t, file  = "GPOEDA.csv")
+# tarea exportar diversas tablas en un solo documento csv (serobles99@gmail.com)
+#graficar la variable GPOEDA (barras) y exportarla a un PDF enviar a correo
