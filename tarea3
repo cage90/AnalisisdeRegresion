@@ -1,0 +1,20 @@
+library (foreign)
+mtil15 <- data.frame(read.dbf("mti2015_05_17_sdem_precodificado.DBF"))
+mtil15$EDA <- as.numeric(as.character(mtil15$EDA))
+table(mtil15$EDA)
+mtil15$GPOEDA[mtil15$EDA >= 5 & mtil15$EDA <= 7 ] <-1
+mtil15$GPOEDA[mtil15$EDA >= 8 & mtil15$EDA <= 11 ] <-2
+mtil15$GPOEDA[mtil15$EDA >= 12 & mtil15$EDA <= 14 ] <-3
+mtil15$GPOEDA[mtil15$EDA >= 15 & mtil15$EDA <= 17 ] <-4
+table(mtil15$GPOEDA)
+mtil15$GPOEDA <- factor(mtil15$GPOEDA,levels = c(1,2,3,4),labels = c("niño","preado","ado","joven"))
+barplot(table(mtil15$GPOEDA), main="GPOEDA", ylim=c(0,30000), xlab="Grupo", ylab="Numero de ",col=c(200, 50, 100, 150), border=c("black","black","black","black"),space=.05)
+savePlot(filename = "GPOEDA.pdf", type = "pdf", device = dev.cur(),restoreConsole = TRUE)
+help("savePlot")
+
+###tarea como generar varias tablas en una hoja de calculo enviar  a serobles99@gmail.com
+###graficar en grafica de barras la variable GPOEDA Y exportarla a un PDF Y enviarla a su correo (giplot funcion)
+require(questionr)
+ta<-wtd.table(mtil15$EDA,weights = mtil15$FAC_MTI)
+t<- wtd.table(mtil15$GPOEDA, weights = mtil15$FAC_MTI)
+write.csv(c(t,ta),file="practica1.csv")
