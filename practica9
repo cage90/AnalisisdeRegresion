@@ -1,0 +1,4 @@
+# a mayor cantidad de km entrenados (x =  no km  var independiente) menor es el tiempo en un maraton (y = tiempo var dependiente)
+km <- sample(1000:1500,100,replace = T)
+tmp <- (sample(100:160,100,replace = T))/60
+plot(km,tmp,main = "Tiempos en maraton")
