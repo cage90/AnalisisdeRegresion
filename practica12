@@ -1,0 +1,33 @@
+## se busca la ralacion de la estatura (x) con la loongitud de salto (y)
+
+x <- c(170,172,173,174,174,175,176,177,180,180,180,180,180,181,181,182,182,182,182,184,184,185,186,188)
+y <- c(.84,1.31,1.42,1.03,1.07,1.08,1.04,1.8,1.45,1.60,1.61,2.13,2.15,.84,1.43,.90,1.81,1.94,2.68,1.49,2.52,3.00,1.87,3.08)
+
+# 1) determinar la ecuacion de la recta de regrecion estimada
+# 2) calcule una estimacion puntual del salto horizontal promedio cuando a estatura de la persona es de 182
+# 3) calcule slos valores de los residuos de min cuadrado de las 4 observaciones con las cuales la estatura es de 182
+#    ¿que proporcion de la variacion observada en el salto horizontal es atribuida a la relacion de regrecion lineal simple?
+
+# 1
+sxy <- (sum(x*y))-(sum(x)*sum(y)/length(x))
+sxx <- (sum(x*x))-(sum(x)*sum(x)/length(x))
+b1 <- sxy/sxx
+b0 <- (sum(y)-b1*sum(x))/length(x)
+########### usando lm (var inde ~ var dep)
+mdo1 <- lm(y~x)
+summary(mdo1)
+mdo1$coefficients[1] # b0
+mdo1$coefficients[-1] # b1
+mdo1$residuals # residuos y's
+
+#2
+ysma <- b0 + b1*182 # valores ajustados
+
+#3 
+res1 <- .90-ysma
+res2 <- 1.81-ysma
+res3 <- 1.94-ysma
+res4 <- 2.68-ysma
+
+plot(y~x, xlab="estatura", ylab = "salto horizontal" , xlim=c(160,190), ylim=c(.80,3.2), main= "grafica de dispercion")
+abline(mdo1,col=("red"))
