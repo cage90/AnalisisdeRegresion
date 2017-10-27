@@ -1,0 +1,23 @@
+# plantear un mrm de minim de 4 variables independientes
+# a este modelo que planteen  van a realizar lo sig 
+# 1) analizar la anova para para conocer la bondad de ajuste 
+# 2) atravez de los coeficientes detectar las variables ind ependientes no significativas
+# 3) analizar la r2 para conocer la variabilidad del modelo
+# 4) en dado caso de que haya alguna variabe independiente no significativa
+# eliminarla y diagnosticar el modelo a traves de las pruebas de los supuestos
+
+
+# variable 1 capacidad (litros)
+capacidad <- c(.5,1,.6,1.5,2,.9,1.2,3,.6,.25)
+# variable 2 calidad
+calidad <- c(1,2,3,2,1,3,2,1,3,3)
+#variable 3 color
+color <- c(255,120,100,50,200,155,170,18,96,70)
+#variable 4 duracion
+duracion <- c(6,12,5,3,10,12,2,4,1,9)
+#variable 3 (dependiente)
+precio <- c(190,219,249,249,250,340,289,395,439,525)
+
+botella <- data.frame(precio,capacidad,calidad,color,duracion)
+modelo2 <- lm(precio~capacidad+calidad+color+duracion)
+anova(modelo2)
