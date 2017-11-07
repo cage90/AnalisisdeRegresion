@@ -1,0 +1,72 @@
+## compracion de modelos 
+# pretendemos selecionar el mejor subconjunto de predictores
+# en este caso para la aplicaciond el mrm tenemos dos variables
+# independientes (calidad y capapcidad) por loque s epropone 
+# comprar 3 modelos con la finalidad de aplicar el principio
+# de parsimonia, conocer variables independientes innecesarias 
+# evitar mutlticolinalidad, es decir, que se tienen 
+# muchas variables intentando explicar el modelo 
+# ante estas variables  se pueden comparar tres modelos 
+# 1) precio ~ capacidad
+# 2) precio ~ calidad 
+# 3) precio ~ calidad + capacidad
+######################  ¿como selecionamos el mejor modelo?
+
+# criterio de informacion de Akeike (AIC)
+# el problema de utilizar R2 para comprar modelos es en muchos 
+# casos al añadir nuevas varibles al modelo, esta dmedida crece
+# si estammos decidiendo  cual de todos los modelos ajusta mejor a a los datos
+# el modelo con mas predictores siempre sera, el mejor ajustado
+# para evitar esto se utiliza el AIC es elegir el modelo
+# que contenga el menor valor de AIC , es decir, esperamos un AIC
+# mas pequeño. el modelo AIC nos va ayudar a decidir sobre la compraracion 
+# de los modelos 
+# el metodo mas recomendado el llamado step by step
+# para r se utiliza la funcion step()
+# dentro de modelo step by step hay 3 mdalidades 
+# 1) forward ... parte del coeficiente Bo y de ahi va probando 
+# las variables independientes para ver cual es la que mas aporta al modelo
+# 2) backward ... R empieza con todas la variables independientes y estudia si 
+# al AIC baja cuando hay cambios de variables 
+# 3) both ... empieza con el forward la diferencia es que que se realizan test para conocer el predictor menos util
+# el modelo mas recomendable es el backward porque tiene un  efecto represor
+# que permite probar cuando una variable tiene influencia solo si otra variable se mantiene 
+# constante vamos a calcular el modelo de las 2 var independientes
+capa <- c(4330,5500,5500,4700,5200,5500,4700,5500,5800,500)
+calidad <- c(2,3,4,3,4,4,4,5,5,5)
+precio <- c(190,219,249,249,250,340,289,395,439,525)
+moch <- data.frame(precio,capa,calidad)
+mdo1 <- lm(precio ~ capa + calidad, data=moch)
+sumary (mdo1)
+# enlos coeficientes observamos el estadistico T que solo tenemos 
+# significativa la variable calidad
+# tenemso un error estandar residual de 58.75 que es un error alto 
+# tambien observamos la r ajustada (por mrm) que tenemos una r
+# ajustada de .70 lo qu explica 70 por ciento dela variabilidad
+# del modelo observamos que tenemos un estadistico F con un buen valor 
+# y p value menor a 0.05 que implica que este modelo es mejor que el 
+#  modelo basico ahora vamos a utilizar la funcion step()
+# para ver si podemos mejorar el ajuste de modelo
+step (mdo1, direction = "backward")
+# aqui podemos ver que el metodo  step analizo 2 modelos 
+# 1) precio ~ capa + calidad con un AIC = 83.90
+# 2) precio ~ calidad con un AIC = 83.51
+####### ahora vamos a utilizar el metodo both 
+step (mdo1, direction = "both")
+# tenemos un resultado igua a de backward por la forma que se construye
+# este metodo ahora con el metodo forward
+step (mdo1, direction = "forward")
+# en este solo muestra el modelo completo porque inicia haciendo 
+# pruebas con el modelo nulo y solo deja el modelo completo porque
+# es el mayor AIC muestra...
+help (datasets)
+library(help = "datasets")
+require(datasets); data("swiss"); ?swiss
+# aplicar un modelo con la variable dependiente fertility a este 
+# modelo tiene que agragarle 3 variables indepenientes , van a realizar
+# una descripcion de la funcion summary del modelo completo 
+# (vardep = inde1 + inde 2 + inde3) la base de datos que van a usar swiss
+# una vez que hagan la descripcion del mo delo completo aplicar el criterio
+# AIC para comparar los modelos posibles de su modelo completo 
+# ya que hayan elegido  un modelo con base en el AIC aplicarlo y
+# describir la funcion summary  de su modelo segun AIC
