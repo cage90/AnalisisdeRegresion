@@ -1,0 +1,47 @@
+#swiss
+# medicacion estandarizada de la fecundidad e indicadores socioeconomicos para cada una de las 47 provincias
+# fracncesas hablantes de suiza alrededor de 1888
+require(stats)
+base <- data.frame(swiss)
+
+# analisis exploratorio
+names(base)
+pairs(base)
+cor(base)
+# propuesta de modelo de regresion ultiple en el analisis exploratorio
+regresion1 <- lm(Infant.Mortality ~ Fertility, data=base)
+# modelo propuesto anteriormente
+nulo <- lm(Fertility ~ 1, data = base) # siempre se aplica el modelo nulo
+summary(nulo)
+completo <- lm(Fertility ~ ., data = base) # lm(Fertility ~ Infant.mortality + education + examination + agriculture + catolic)
+# en completo toma las demas que no sean fertility como var independientes
+step(nulo, scope = list(lower = nulo, upper=completo), direction = "forward")
+summary(completo)
+help(step)
+
+
+#################### ejercicio
+library(help="datasets")
+base <- data.frame(volcano)
+
+# analisis exploratorio
+names(base)
+pairs(base)
+cor(base)
+# propuesta de modelo de regresion ultiple en el analisis exploratorio
+regresion1 <- lm( X1 ~ X2, data=base)
+# modelo propuesto anteriormente
+nulo <- lm(X2 ~ 1, data = base) # siempre se aplica el modelo nulo
+summary(nulo)
+completo <- lm(X2 ~ ., data = base) # lm(Fertility ~ Infant.mortality + education + examination + agriculture + catolic)
+# en completo toma las demas que no sean fertility como var independientes
+step(nulo, scope = list(lower = nulo, upper=completo), direction = "forward")
+summary(completo)
+help(step)
+# el AIC del modelo nulo es de AIC=353.1
+# el AIC del modelo que se acepta es de  AIC=-166.66
+mod <- lm(X2 ~ X3 + X1 + X61 + X42 + X5 + X47 + X19 + X6 + X8 + X59 + X46 + X60 + X4, data = base)
+summary(mod)
+## el error estadandar es de .3566
+## con una rcuadrada de .9978
+## este modelo tiene prueba contundente 
