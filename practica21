@@ -1,0 +1,114 @@
+#me <- read .csv("C://...")
+# mex <- na.omit(me) omite los datos perdidos para una mejor manipulacion he interpretacion de los datos
+# otra forma es imputar los datos por ejemplo un amedia o el dato vecino
+###########################################################################################################
+# ejemplo : se estudia Y = la tasa de respiracion 
+# bajo punto de goteo con un recubrimiento galvanizado
+# el agua que cae sobre el liquen contiene zinc y potasio 
+# que utlizamos como variables explicativas
+
+tasa.respiracion <- c(71,53,55,48,69,84,21,68,68)
+potasio <- c(388,258,292,205,449,331,114,580,622)
+zinc <- c(2414,10693,11682,12560,2464,2607,16205,2005,1825)
+estudio <- data.frame(tasa.respiracion,potasio,zinc)
+pairs(estudio)
+cor(estudio)
+regnull <- lm(tasa.respiracion ~ 1, data=estudio)
+allreg <- lm(tasa.respiracion~ . ,data=estudio)
+step(regnull, scope = list(lower=regnull, upper=allreg), direction="forward")
+md1 <- lm(tasa.respiracion ~ zinc, data=estudio)
+summary(md1)
+### comparacion de los modelos 
+shapiro.test(rstudent(md1))
+require(lmtest)
+bptest(md1)
+dwtest(md1, alternative = "tow.sided")### no funciona
+summary(md1)
+# ecuacion del modelo
+# y = 79.48 + (-.00285)x1 + e
+# interpretacion del modelo
+# por cada unidad de zinc que aumenta disminuye en un .00285 la tasa de resiracion 
+limestudio <- seq(min(estudio$zinc), max(estudio$zinc), length = 9)
+limestudio <- data.frame(limestudio)
+limestudio
+limestud <- predict.lm(allreg,limestudio, interval = "prediction",se.fit = TRUE , data=estudio)
+head(limestud$fit) ## genera los limites
+matplot(limestudio, limestud$fit,type="l")# para dibujar los limites
+############ predicciones 
+predict(allreg,data.frame(zinc = 10000,potasio=40),interval = "predict")
+
+
+##################################################################
+# ejemplo 2 ritmo cardiaco de personas con diabetes
+peso <- c(74,92,63,58,78,85,85,73,62,80,72,74)
+altura <- c(168,196,170,175,162,169,190,186,176,170,176,179)
+ritmo <- c(62,75,60,71,66,62,79,74,70,66,71,69)
+edad <- c(25,31,29,64,44,41,37,35,34,29,19,50)
+
+estudio <-  data.frame(peso,altura,ritmo,edad)
+pairs(estudio)
+cor(estudio)
+regnull <- lm(ritmo ~ 1, data=estudio)
+allreg <- lm(ritmo ~ . ,data=estudio)
+step(regnull, scope = list(lower=regnull, upper=allreg), direction="forward")
+md1 <- lm(ritmo ~ altura, data=estudio)
+summary(md1) # rcuadrada ajustada = 0.6725 entonces en este modelo explica en un 67.25 % 
+### comparacion de los modelos 
+shapiro.test(rstudent(md1)) # con un p-value = 0.9465 que es > .05 pasa la prueba
+require(lmtest)
+bptest(md1) # con un p-value = 0.4444 > .05 pasa la prueba 
+dwtest(md1,alternative = "tow.sided") # dw = 1.91 que se encuentra en [1.5 ~ 2.5]
+summary(md1)
+# ecuacion del modelo
+# y = -17.1479 + .4869x1 +e
+# interpretacion del modelo
+# pora cada unidad que la altura aumenta el ritmo aumenta en .4869 unidades
+limestudio1 <- seq(min(estudio$altura), max(estudio$altura), length = 12)
+limestudio2 <- seq(min(estudio$peso), max(estudio$peso), length = 12)
+limestudio3 <- seq(min(estudio$edad), max(estudio$edad), length = 12)
+limestudio <- data.frame(limestudio1,limestudio2,limestudio3)
+limestudio
+limestud <- predict.lm(allreg,limestudio, interval = "prediction",se.fit = TRUE , data=estudio)
+head(limestud$fit) ## genera los limites
+matplot(limestudio, limestud$fit,type="l")# para dibujar los limites
+############ predicciones 
+predict(allreg,data.frame(peso = 60,altura=190,edad=61),interval = "predict")
+####################################################################
+# ejemplo 2 biodiversidad
+# fuente inegi  biodiversidad 2015 y banco mundial
+# P.E : peligro de  extincion
+# E.A : especie amenazada
+# P.T : poblacion total 2015
+
+#########################################
+N_cajas<-c(10,15,10,20,25,18,12,14,16,22,24,17,13,30,24)
+Distancia<-c(30,25,40,18,22,31,26,34,29,37,20,25,27,23,33)
+Tiempo<-c(24,27,29,31,25,33,26,28,31,39,33,30,25,42,40)
+estudio <-  data.frame(N_cajas,Distancia,Tiempo)
+pairs(estudio)
+cor(estudio)
+regnull <- lm(Tiempo ~ 1, data=estudio)
+allreg <- lm(Tiempo ~ . ,data=estudio)
+step(regnull, scope = list(lower=regnull, upper=allreg), direction="forward")
+md1 <- lm(Tiempo ~ N_cajas + Distancia, data=estudio)
+summary(md1)
+shapiro.test(rstudent(md1)) #p-value = 1.985e-06 > .05 falso
+require(lmtest)
+bptest(md1)  #p-value = 0.2669 > .05 verdadero
+dwtest(md1,alternative = "tow.sided")#p-value = 0.26 > .05 verdadero
+summary(md1)
+
+
+
+#####
+install.packages("car")
+require(car)
+outlierTest(allreg,cutoff = 5,order =T)
+influencePlot(allreg,id.n = 5)
+# las observaciones de 5 indican con problemas
+# ahora para confirmar los casos que implicaciones
+# en el modelo se aplica el grafico de distancias de cook 
+cmod2 <-cooks.distance(allreg)
+install.packages("faraway")
+require(faraway)
+halfnorm(cmod2, ylab = "dist cook") # muestra que valores son los atipocos en este caso es el 5 seguido de 14
